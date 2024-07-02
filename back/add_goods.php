@@ -1,7 +1,7 @@
 <style>
-select {
-    padding: 5px 10px;
-}
+    select {
+        padding: 5px 10px;
+    }
 </style>
 <h2 class="ct">新增商品</h2>
 <form action="./api/save_goods.php" method="post" enctype="multipart/form-data">
@@ -50,29 +50,28 @@ select {
             </td>
         </tr>
     </table>
-    <div class="ct"><input type="submit" value="新增"><input type="reset" value="重置"><input type="button"
-            onclick="history.go(-1)" value="返回"></div>
+    <div class="ct"><input type="submit" value="新增"><input type="reset" value="重置"><input type="button" onclick="history.go(-1)" value="返回"></div>
 </form>
 <script>
-getBig();
+    getBig();
 
-function getBig() {
-    $.get('./api/get_big.php', (res) => {
-        $('#big').html(res);
+    function getBig() {
+        $.get('./api/get_big.php', (res) => {
+            $('#big').html(res);
+            let big_id = $('#big').val();
+            getMid(big_id);
+        })
+    }
+
+    function getMid(big_id) {
+        $.get('./api/get_mid.php', {
+            big_id
+        }, (res) => {
+            $('#mid').html(res)
+        })
+    }
+    $('#big').on("change", () => {
         let big_id = $('#big').val();
         getMid(big_id);
     })
-}
-
-function getMid(big_id) {
-    $.post('./api/get_mid.php', {
-        big_id
-    }, (res) => {
-        $('#mid').html(res)
-    })
-}
-$('#big').on("change", () => {
-    let big_id = $('#big').val();
-    getMid(big_id);
-})
 </script>
