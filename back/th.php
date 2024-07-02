@@ -1,8 +1,13 @@
+<style>
+select {
+    padding: 5px 10px;
+}
+</style>
 <h2 class="ct">商品分類</h2>
 <div class="ct"><label>新增大分類</label><input type="text" name="big" id="big"><button onclick="addType('big')">新增</button>
 </div>
 <div class="ct">
-    <label>新增大分類</label>
+    <label>新增中分類</label>
     <select name="bigs" id="bigs">
         <?php
         $bigs = $Type->all(['big_id' => 0]);
@@ -41,6 +46,34 @@
 </table>
 <hr>
 <h2 class="ct">商品管理</h2>
+<div class="ct"><button onclick="location.href='?do=add_goods'">新增商品</button></div>
+<table class="all">
+    <tr>
+        <th class="tt">編號</th>
+        <th class="tt">商品名稱</th>
+        <th class="tt">庫存量</th>
+        <th class="tt">狀態</th>
+        <th class="tt">操作</th>
+    </tr>
+    <?php
+    $goods = $Goods->all();
+    foreach ($goods as $g) {
+    ?>
+    <tr>
+        <td class="pp"><?= $g['no'] ?></td>
+        <td class="pp"><?= $g['name'] ?></td>
+        <td class="pp"><?= $g['stock'] ?></td>
+        <td class="pp"><?= ($g['sh'] == 1) ? "販售中" : "已下架" ?></td>
+        <td class="pp">
+            <button onclick="location.href='?do=edit_goods&id=<?= $g['id'] ?>'">修改</button><button
+                onclick="del('goods',<?= $g['id'] ?>)">刪除</button><br>
+            <button onclick="sw(<?= $g['id'] ?>,1)">上架</button><button onclick="sw(<?= $g['id'] ?>,0)">下架</button>
+        </td>
+    </tr>
+    <?php
+    }
+    ?>
+</table>
 <script>
 function addType(type) {
     switch (type) {
@@ -83,5 +116,14 @@ function edit(dom, id) {
             let text = $(dom).parent().prev().text(name);
         })
     }
+}
+
+function sw(id, sh) {
+    $.post('./api/sw.php', {
+        id,
+        sh
+    }, (res) => {
+        location.reload();
+    })
 }
 </script>
