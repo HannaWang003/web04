@@ -1,4 +1,4 @@
-<div class="ct">訂單管理</div>
+<h2 class="ct">訂單管理</h2>
 <table class="all">
     <tr>
         <th class="tt">訂單編號</th>

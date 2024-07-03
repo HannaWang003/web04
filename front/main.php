@@ -48,7 +48,7 @@ foreach ($goods as $g) {
 ?>
     <div class="all pp">
         <div>
-            <img src="./img/<?= $g['img'] ?>" alt="">
+            <a href="?do=intro&id=<?= $g['id'] ?>"><img src="./img/<?= $g['img'] ?>" alt=""></a>
         </div>
         <div>
             <div class='tt ct'><?= $g['name'] ?></div>
