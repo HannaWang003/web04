@@ -46,7 +46,7 @@ body
 	padding:2%;
 	height:550px;
 	border:#000 1px solid;
-	overflow-x:scroll;
+	overflow:scroll;
 }
 #bottom
 {

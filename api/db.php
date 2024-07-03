@@ -112,3 +112,4 @@ $Admin = new DB('admin');
 $Mem = new DB('mem');
 $Type = new DB('type');
 $Goods = new DB('goods');
+$Order = new DB('orders');
