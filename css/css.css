@@ -111,3 +111,11 @@ div.ww:hover > div.s
 {
 	font-size:12px;
 }
+#left div.s a{
+	background:lightgreen;
+	color:white;
+	position:relative;
+	left:20px;
+	z-index:10;
+
+}
