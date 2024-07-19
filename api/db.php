@@ -72,7 +72,7 @@ class DB
     {
         if (isset($ary['id'])) {
             $sql = "update `$this->table` set ";
-            $sql .= join(" && ", $this->a2s($ary));
+            $sql .= join(",", $this->a2s($ary));
             $sql .= " where `id`='{$ary['id']}'";
         } else {
             $sql = "insert into `$this->table` ";

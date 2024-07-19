@@ -1,7 +1,7 @@
 <?php
 $table = $_GET['do'];
 $DB = ${ucfirst($table)};
-if (isset($_POST['bottom'])) {
+if (isset($_POST)) {
     $DB->save($_POST);
 }
 ?>
