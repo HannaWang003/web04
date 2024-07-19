@@ -37,6 +37,10 @@ if (!empty($_SESSION['cart'])) {
         }
         ?>
     </table>
+    <div class="ct">
+        <a href="?do=main"><img src="./icon/0411.jpg" alt=""></a>
+        <a href="?do=checkout"><img src="./icon/0412.jpg" alt=""></a>
+    </div>
 <?php
 } else {
     echo "<h2 class='ct'>目前購物車尚無商品</h2>";
