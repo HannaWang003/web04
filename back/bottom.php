@@ -1,8 +1,6 @@
 <?php
-$table = $_GET['do'];
-$DB = ${ucfirst($table)};
-if (isset($_POST)) {
-    $DB->save($_POST);
+if (isset($_POST['bottom'])) {
+    $Bottom->save($_POST);
 }
 ?>
 <h1 class="ct">編輯頁尾版權區</h1>
@@ -10,7 +8,7 @@ if (isset($_POST)) {
     <table class="all">
         <tr>
             <th class="tt">頁尾宣告內容</th>
-            <td class="pp"><input type="text" name="bottom" value="<?= $DB->find(1)['bottom'] ?>" style="width:90%">
+            <td class="pp"><input type="text" name="bottom" value="<?= $Bottom->find(1)['bottom'] ?>" style="width:90%">
             </td>
         </tr>
     </table>

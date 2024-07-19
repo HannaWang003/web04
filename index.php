@@ -15,7 +15,6 @@ include_once "./api/db.php";
 </head>
 
 <body>
-    <iframe name="back" style="display:none;"></iframe>
     <div id="main">
         <div id="top" style="display:flex;justify-content:space-between;">
 
@@ -56,6 +55,9 @@ include_once "./api/db.php";
         <marquee behavior="" direction="">年終特賣會開跑了 &nbsp;情人節特惠活動</marquee>
         <div id="left" class="ct">
             <div style="min-height:400px;">
+                <?php
+                include "./front/menu.php";
+                ?>
             </div>
             <span>
                 <div>進站總人數</div>
