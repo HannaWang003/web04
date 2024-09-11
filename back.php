@@ -4,7 +4,7 @@ if (!isset($_SESSION['admin'])) {
     to("index.php");
 } else {
     $row = $Admin->find(['acc' => $_SESSION['admin']]);
-    $row['pr']=unserialize($row['pr']);
+    $row['pr'] = unserialize($row['pr']);
 }
 ?>
 <!DOCTYPE html
@@ -34,11 +34,11 @@ if (!isset($_SESSION['admin'])) {
         <div id="left" class="ct">
             <div style="min-height:400px;">
                 <?= ($_SESSION['admin'] == "admin") ? "<a href='?do=admin'>管理權限設置</a>" : "" ?>
-                <?=(in_array(1,$row['pr']))?"<a href='?do=th'>商品分類與管理</a>":""?>
-                <?=(in_array(2,$row['pr']))?"<a href='?do=order'>訂單管理</a>":""?>
-                <?=(in_array(3,$row['pr']))?"<a href='?do=mem'>會員管理</a>":""?>
-                <?=(in_array(4,$row['pr']))?"<a href='?do=bottom'>頁尾版權管理</a>":""?>
-                <?=(in_array(5,$row['pr']))?"<a href='?do=news'>最新消息管理</a>":""?>
+                <?= (in_array(1, $row['pr'])) ? "<a href='?do=th'>商品分類與管理</a>" : "" ?>
+                <?= (in_array(2, $row['pr'])) ? "<a href='?do=order'>訂單管理</a>" : "" ?>
+                <?= (in_array(3, $row['pr'])) ? "<a href='?do=mem'>會員管理</a>" : "" ?>
+                <?= (in_array(4, $row['pr'])) ? "<a href='?do=bottom'>頁尾版權管理</a>" : "" ?>
+                <?= (in_array(5, $row['pr'])) ? "<a href='?do=news'>最新消息管理</a>" : "" ?>
                 <a href='?do=logout' style="color:#f00;">登出</a>
             </div>
         </div>
@@ -46,7 +46,7 @@ if (!isset($_SESSION['admin'])) {
             <?php
             $do = ($_GET['do']) ?? "admin";
             $file = "./back/$do.php";
-            if (isset($file)) {
+            if (file_exists($file)) {
                 include $file;
             } else {
                 include "./back/admin.php";

@@ -44,12 +44,12 @@ include_once "./api/db.php";
             <marquee behavior="" direction="">情人節特惠活動 &nbsp; 為了慶祝七夕情人節，將舉辦情人兩人到現場有七七折之特惠活動~</marquee>
             <div style="height:500px;width:100%;overflow:auto;">
                 <?php
-                $do = ($_GET['do']) ?? "admin";
+                $do = ($_GET['do']) ?? "main";
                 $file = "./front/$do.php";
-                if (isset($file)) {
+                if (file_exists($file)) {
                     include $file;
                 } else {
-                    include "./front/admin.php";
+                    include "./front/main.php";
                 }
                 ?>
             </div>
