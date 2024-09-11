@@ -115,4 +115,7 @@ if (isset($_GET['do'])) {
         $table = $_GET['do'];
         $DB = ${ucfirst($table)};
     }
+} else {
+    $table = "admin";
+    $DB = ${ucfirst($table)};
 }
