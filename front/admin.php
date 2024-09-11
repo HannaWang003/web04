@@ -25,24 +25,24 @@
     </tr>
 </table>
 <script>
-function login() {
-    let ans = $('#ans').val();
-    let acc = $('#acc').val();
-    let pw = $('#pw').val();
-    $.post('./api/login.php?do=admin', {
-        acc,
-        pw
-    }, (res) => {
-        if (res == 0) {
-            alert("帳號或密碼錯誤");
-        } else {
-            if (ans != <?= $_SESSION['ans'] ?>) {
-                alert("對不起，您輸入的驗證碼有誤請您重新登入");
+    function login() {
+        let ans = $('#ans').val();
+        let acc = $('#acc').val();
+        let pw = $('#pw').val();
+        $.post('./api/login.php?do=admin', {
+            acc,
+            pw
+        }, (res) => {
+            if (res == 0) {
+                alert("帳號或密碼錯誤");
             } else {
-                location.href = "back.php";
+                if (ans != <?= $_SESSION['ans'] ?>) {
+                    alert("對不起，您輸入的驗證碼有誤請您重新登入");
+                } else {
+                    location.href = "back.php";
+                }
             }
-        }
-    })
+        })
 
-}
+    }
 </script>

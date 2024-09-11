@@ -1,5 +1,11 @@
 <?php
 include_once "./api/db.php";
+if (!isset($_SESSION['admin'])) {
+    to("index.php");
+} else {
+    $row = $Admin->find(['acc' => $_SESSION['admin']]);
+    $row['pr']=unserialize($row['pr']);
+}
 ?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -27,13 +33,13 @@ include_once "./api/db.php";
         </div>
         <div id="left" class="ct">
             <div style="min-height:400px;">
-                <a href="?do=admin">管理權限設置</a>
-                <a href="?do=th">商品分類與管理</a>
-                <a href="?do=order">訂單管理</a>
-                <a href="?do=mem">會員管理</a>
-                <a href="?do=bottom">頁尾版權管理</a>
-                <a href="?do=news">最新消息管理</a>
-                <a href="?do=logout" style="color:#f00;">登出</a>
+                <?= ($_SESSION['admin'] == "admin") ? "<a href='?do=admin'>管理權限設置</a>" : "" ?>
+                <?=(in_array(1,$row['pr']))?"<a href='?do=th'>商品分類與管理</a>":""?>
+                <?=(in_array(2,$row['pr']))?"<a href='?do=order'>訂單管理</a>":""?>
+                <?=(in_array(3,$row['pr']))?"<a href='?do=mem'>會員管理</a>":""?>
+                <?=(in_array(4,$row['pr']))?"<a href='?do=bottom'>頁尾版權管理</a>":""?>
+                <?=(in_array(5,$row['pr']))?"<a href='?do=news'>最新消息管理</a>":""?>
+                <a href='?do=logout' style="color:#f00;">登出</a>
             </div>
         </div>
         <div id="right" style="overflow:auto;">
