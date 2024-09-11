@@ -20,7 +20,16 @@ td {
         <td class="pp"><?= $row['acc'] ?></td>
         <td class="pp"><?= str_repeat("*", mb_strlen($row['pw'])) ?></td>
         <td class="pp">
-            <?=($row['acc'] == "admin") ? "此帳號為最高權限" : " <button>修改</button><button>刪除</button>";?>
+            <?php 
+            if($row['acc'] == "admin"){
+                echo  "此帳號為最高權限";
+            }else{
+?>
+            <button onclick="location.href='?do=edit_admin&id=<?=$row['id']?>'">修改</button><button
+                onclick="del(<?=$row['id']?>)">刪除</button>
+            <?php
+            }
+             ?>
         </td>
     </tr>
     <?php
