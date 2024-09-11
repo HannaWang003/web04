@@ -20,7 +20,7 @@ include_once "./api/db.php";
     <iframe name="back" style="display:none;"></iframe>
     <div id="main">
         <div id="top">
-            <a href="back.php">
+            <a href="index.php">
                 <img src="./icon/0416.jpg">
             </a>
             <img src="./icon/0417.jpg">
@@ -38,17 +38,17 @@ include_once "./api/db.php";
         </div>
         <div id="right" style="overflow:auto;">
             <?php
-			$do = ($_GET['do']) ?? "admin";
-			$file = "./back/$do.php";
-			if (isset($file)) {
-				include $file;
-			} else {
-				include "./back/admin.php";
-			}
-			?>
+            $do = ($_GET['do']) ?? "admin";
+            $file = "./back/$do.php";
+            if (isset($file)) {
+                include $file;
+            } else {
+                include "./back/admin.php";
+            }
+            ?>
         </div>
         <div id="bottom" style="line-height:70px; color:#FFF; background:url(icon/bot.png);" class="ct">
-            <?=$Bottom->find(1)['bottom']?></div>
+            <?= $Bottom->find(1)['bottom'] ?></div>
     </div>
 
 </body>
