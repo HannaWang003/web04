@@ -2,9 +2,9 @@
 $rows = $DB->all();
 ?>
 <style>
-td {
-    text-align: center;
-}
+    td {
+        text-align: center;
+    }
 </style>
 <div class="ct"><button onclick="location.href='?do=add_admin'">新增管理員</button></div>
 <table class="all">
@@ -16,33 +16,32 @@ td {
     <?php
     foreach ($rows as $row) {
     ?>
-    <tr>
-        <td class="pp"><?= $row['acc'] ?></td>
-        <td class="pp"><?= str_repeat("*", mb_strlen($row['pw'])) ?></td>
-        <td class="pp">
-            <?php
+        <tr>
+            <td class="pp"><?= $row['acc'] ?></td>
+            <td class="pp"><?= str_repeat("*", mb_strlen($row['pw'])) ?></td>
+            <td class="pp">
+                <?php
                 if ($row['acc'] == "admin") {
                     echo  "此帳號為最高權限";
                 } else {
                 ?>
-            <button onclick="location.href='?do=edit_admin&id=<?= $row['id'] ?>'">修改</button><button
-                onclick="del('<?= $table ?>',<?= $row['id'] ?>)">刪除</button>
-            <?php
+                    <button onclick="location.href='?do=edit_admin&id=<?= $row['id'] ?>'">修改</button><button
+                        onclick="del(<?= $row['id'] ?>)">刪除</button>
+                <?php
                 }
                 ?>
-        </td>
-    </tr>
+            </td>
+        </tr>
     <?php
     }
     ?>
 </table>
 <script>
-function del(table, id) {
-    $.get('./api/del.php', {
-        table,
-        id
-    }, () => {
-        location.reload();
-    })
-}
+    function del(id) {
+        $.get('./api/del.php?do=<?= $table ?>', {
+            id
+        }, () => {
+            location.reload();
+        })
+    }
 </script>
