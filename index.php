@@ -27,13 +27,61 @@ include_once "./api/db.php";
                 <a href="?do=news">最新消息</a> |
                 <a href="?do=look">購物流程</a> |
                 <a href="?do=buycart">購物車</a> |
+                <?php
+                if (isset($_SESSION['mem'])) {
+                ?>
+                <a href="?do=logout">登出</a> |
+                <?php
+                } else {
+                ?>
                 <a href="?do=mem">會員登入</a> |
+                <?php
+                }
+                if (isset($_SESSION['admin'])) {
+                ?>
+                <a href="back.php">返回管理</a>
+                <?php
+                } else {
+                ?>
                 <a href="?do=admin">管理登入</a>
+                <?php
+                }
+                ?>
             </div>
         </div>
-        <div id="left" class="ct">
+        <div id="left" class="ct" style="overflow:auto;">
             <div style="min-height:400px;">
+                <a href="?type=0">全部商品(<?= $Goods->count(['sh' => 1]) ?>)</a>
+                <?php
+                $menus = $Th->all(['big_id' => 0]);
+                foreach ($menus as $big) {
+                ?>
+                <div class="ww">
+                    <a
+                        href="?type=<?= $big['id'] ?>"><?= $big['name'] ?>(<?= $Goods->count(['big' => $big['id'], 'sh' => 1]) ?>)</a>
+                    <?php
+                        $mids = $Th->all(['big_id' => $big['id']]);
+                        if (!empty($mids)) {
+                            foreach ($mids as $mid) {
+                        ?>
+                    <div class="s">
+                        <a href="?type=<?= $mid['id'] ?>"
+                            style="background:lightgreen"><?= $mid['name'] ?>(<?= $Goods->count(['mid' => $mid['id'], 'sh' => 1]) ?>)</a>
+                    </div>
+                    <?php
+                            }
+                        }
+                        ?>
+                </div>
+                <?php
+                }
+                ?>
             </div>
+            <script>
+            $('.big').hover(function() {
+                $()
+            })
+            </script>
             <span>
                 <div>進站總人數</div>
                 <div style="color:#f00; font-size:28px;">
@@ -55,8 +103,11 @@ include_once "./api/db.php";
             </div>
         </div>
         <div id=" bottom" style="line-height:70px;background:url(icon/bot.png); color:#FFF;" class="ct">
-            <?=$Bottom->find(1)['bottom']?></div>
+            <?= $Bottom->find(1)['bottom'] ?></div>
     </div>
+    <script>
+
+    </script>
 
 </body>
 
