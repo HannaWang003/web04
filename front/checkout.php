@@ -50,3 +50,21 @@ $mem = $Mem->find(['acc' => $_SESSION['mem']]);
         <td class="tt ct" colspan="5">總價:<?= $sum ?></td>
     </tr>
 </table>
+<div class="ct">
+    <input type="button" value="確認送出" onclick="checkout()"><input type="button" value="返回修改訂單" onclick="history.go(-1)">
+</div>
+<script>
+function checkout() {
+    let data = {
+        name: $('#name').val(),
+        email: $('#email').val(),
+        addr: $('#addr').val(),
+        tel: $('#tel').val(),
+        total: "<?= $sum ?>"
+    }
+    $.post('./api/checkout.php?do=order', data, (res) => {
+        alert("訂購成功:" + res + "\n感謝您的選購");
+        location.href = "index.php";
+    })
+}
+</script>
