@@ -19,36 +19,50 @@ include_once "./api/db.php";
     <div id="main">
         <div id="top">
             <a href="index.php">
-                <img src="./icon/0416.jpg" style="width:50%;">
+                <img src="./icon/0416.jpg" style="width:55%;">
             </a>
             <div style="padding:10px;float:right">
                 <a href="index.php">回首頁</a> |
                 <a href="?do=news">最新消息</a> |
                 <a href="?do=look">購物流程</a> |
                 <a href="?do=buycart">購物車</a> |
-                <a href="?do=mem">會員登入</a> |
+                <?php
+                if (isset($_SESSION['mem'])) {
+                    echo "<a href='./api/logout.php?do=mem'>登出</a>";
+                } else {
+                ?>
+                    <a href="?do=mem">會員登入</a>
+                <?php
+                }
+                ?>
+                |
                 <a href="?do=admin">管理登入</a>
             </div>
         </div>
         <div id="left" class="ct">
             <div style="min-height:400px;">
-                <a href="?type=0">全部商品</a>
+                <?php
+                $num = $Goods->count(['sh' => 1]);
+                ?>
+                <a href="?type=0">全部商品(<?= $num ?>)</a>
                 <?php
                 $bigs = $Th->all(['big_id' => 0]);
                 foreach ($bigs as $big) {
+                    $bign = $Goods->count(['sh' => 1, 'big' => $big['id']]);
                 ?>
-                <div class="ww">
-                    <a href="?type=<?= $big['id'] ?>"><?= $big['text'] ?></a>
-                    <?php
+                    <div class="ww">
+                        <a href="?type=<?= $big['id'] ?>"><?= $big['text'] ?>(<?= $bign ?>)</a>
+                        <?php
                         $mids = $Th->all(['big_id' => $big['id']]);
                         foreach ($mids as $mid) {
+                            $midn = $Goods->count(['sh' => 1, 'mid' => $mid['id']]);
                         ?>
-                    <div class="s"><a href="?type=<?= $mid['id'] ?>"
-                            style="background:lightgreen"><?= $mid['text'] ?></a></div>
-                    <?php
+                            <div class="s"><a href="?type=<?= $mid['id'] ?>"
+                                    style="background:lightgreen"><?= $mid['text'] ?>(<?= $midn ?>)</a></div>
+                        <?php
                         }
                         ?>
-                </div>
+                    </div>
                 <?php
                 }
                 ?>
