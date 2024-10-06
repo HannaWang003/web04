@@ -17,40 +17,49 @@ include_once "./api/db.php";
 
 <body>
     <div id="main">
-        <div id="top" style="display:flex;">
-            <a href="?" style="width:57%">
-                <img src="./icon/0416.jpg" style="width:100%;">
+        <div id="top" style="display:flex">
+            <a href="index.php">
+                <img src="./icon/0416.jpg" style="width:100%">
             </a>
-            <div style="padding:10px;">
+            <div style="padding:10px;width:50%">
                 <a href="?">回首頁</a> |
                 <a href="?do=news">最新消息</a> |
                 <a href="?do=look">購物流程</a> |
                 <a href="?do=buycart">購物車</a> |
-                <?= (isset($_SESSION['mem'])) ? "<a href='./api/logout.php?do=mem'>登出</a>" : "<a href='?do=mem'>會員登入</a>" ?>
-                |
+                <?php
+                if (isset($_SESSION['mem'])) {
+                ?>
+                    <a href="./api/logout.php?do=mem" style="color:#f00;">登出</a>
+                <?php
+                } else {
+                ?>
+                    <a href="?do=mem">會員登入</a>
+                <?php
+                }
+                ?> |
                 <a href="?do=admin">管理登入</a>
             </div>
         </div>
         <div id="left" class="ct">
             <div style="min-height:400px;">
-                <a href="?">全部商品</a>
+                <div class="ww"><a href="index.php">全部商品(<?= $Goods->count(['sh' => 1]) ?>)</a></div>
                 <?php
-                $ths = $Th->all(['big_id' => 0]);
-                foreach ($ths as $th) {
+                $thbs = $Th->all(['big_id' => 0]);
+                foreach ($thbs as $thb) {
                 ?>
-                    <div class="ww"><a href="?type=<?= $th['id'] ?>">
-                            <?= $th['text'] ?></a>
+                    <div class="ww">
+                        <a
+                            href="?type=<?= $thb['id'] ?>"><?= $thb['text'] ?>(<?= $Goods->count(['big' => $thb['id']]) ?>)</a>
                         <?php
-                        $mths = $Th->all(['big_id' => $th['id']]);
-                        foreach ($mths as $mth) {
+                        $thms = $Th->all(['big_id' => $thb['id']]);
+                        foreach ($thms as $thm) {
                         ?>
-                            <div class="s"><a href="?type=<?= $mth['id'] ?>"
-                                    style="background:lightgreen;"><?= $mth['text'] ?></a></div>
+                            <div class="s"><a href="?type=<?= $thm['id'] ?>"
+                                    style="background:lightgreen"><?= $thm['text'] ?>(<?= $Goods->count(['mid' => $thm['id']]) ?>)</a>
+                            </div>
                         <?php
                         }
                         ?>
-
-
                     </div>
                 <?php
                 }
@@ -74,8 +83,8 @@ include_once "./api/db.php";
             }
             ?>
         </div>
-        <div id="bottom" style="line-height:70px;background:url(icon/bot.png); color:#FFF;" class="ct">
-            <?= $Bottom->find(1)['bottom'] ?></div>
+        <div id="bottom" style="line-height:70px;background:url(./icon/bot.png); color:#FFF;" class="ct">
+            <?= $Bottom->find(1)['bottom'] ?> </div>
     </div>
 
 </body>

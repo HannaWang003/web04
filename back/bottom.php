@@ -7,5 +7,11 @@
             </td>
         </tr>
     </table>
-    <div class="ct"><input type="submit" value="編輯"><input type="reset" value="重置"></div>
+    <input type="hidden" name="id" value="1">
+    <div class="ct"><input type="submit" value="編輯"><input type="button" value="重置" onclick="clean()"></div>
 </form>
+<script>
+function clean() {
+    $('input[name="bottom"]').val("");
+}
+</script>

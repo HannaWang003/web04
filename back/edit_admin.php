@@ -1,17 +1,17 @@
+<h1 class="ct">修改管理員權限</h1>
 <?php
 $row = $Admin->find($_GET['id']);
 $pr = unserialize($row['pr']);
 ?>
-<h2 class="ct">修改管理員權限</h2>
 <form action="./api/admin.php?do=admin" method="post">
     <table class="all">
         <tr>
-            <th class="tt" width="40%">帳號</th>
-            <td class="pp"><input type="text" name="acc" value="<?= $row['acc'] ?>"></td>
+            <th class="tt" width="40%;">帳號</th>
+            <td class="pp"><input type="text" name="acc" id="acc" value="<?= $row['acc'] ?>"></td>
         </tr>
         <tr>
             <th class="tt">密碼</th>
-            <td class="pp"><input type="password" name="pw" id="pw" value="$<?= $row['pw'] ?>"></td>
+            <td class="pp"><input type="password" name="pw" id="pw" value="<?= $row['pw'] ?>"></td>
         </tr>
         <tr>
             <th class="tt">權限</th>
@@ -20,7 +20,7 @@ $pr = unserialize($row['pr']);
                 </div>
                 <div><input type="checkbox" name="pr[]" value="2" <?= (in_array(2, $pr)) ? "checked" : "" ?>>訂單管理</div>
                 <div><input type="checkbox" name="pr[]" value="3" <?= (in_array(3, $pr)) ? "checked" : "" ?>>會員管理</div>
-                <div><input type="checkbox" name="pr[]" value="4" <?= (in_array(4, $pr)) ? "checked" : "" ?>>頁尾版權區管理
+                <div><input type="checkbox" name="pr[]" value="4" <?= (in_array(4, $pr)) ? "checked" : "" ?>>頁尾版權管理
                 </div>
                 <div><input type="checkbox" name="pr[]" value="5" <?= (in_array(5, $pr)) ? "checked" : "" ?>>最新消息管理
                 </div>

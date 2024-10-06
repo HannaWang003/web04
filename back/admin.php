@@ -3,11 +3,10 @@
     <tr>
         <th class="tt">帳號</th>
         <th class="tt">密碼</th>
-        <th class="tt">管理</th>
+        <th class="tt">管理登入</th>
     </tr>
     <?php
-    $rows = $DB->all();
-    foreach ($rows as $row) {
+    foreach ($DB->all() as $row) {
     ?>
     <tr>
         <td class="ct pp"><?= $row['acc'] ?></td>
@@ -15,11 +14,13 @@
         <td class="ct pp">
             <?php
                 if ($row['acc'] == "admin") {
-                    echo "此帳號為最高權限";
+                ?>
+            此帳號為最高權限
+            <?php
                 } else {
                 ?>
             <button onclick="location.href='?do=edit_admin&id=<?= $row['id'] ?>'">修改</button><button
-                onclick="del(this,<?= $row['id'] ?>)">刪除</button>
+                onclick="del(<?= $row['id'] ?>)">刪除</button>
             <?php
                 }
                 ?>
@@ -31,11 +32,11 @@
 </table>
 <div class="ct"><button onclick="location.href='index.php'">返回</button></div>
 <script>
-function del(dom, id) {
-    $.get('./api/del.php?do=admin', {
+function del(id) {
+    $.post('./api/del_acc.php?do=<?= $table ?>', {
         id
     }, () => {
-        $(dom).parents('tr').remove();
+        location.reload();
     })
 }
 </script>

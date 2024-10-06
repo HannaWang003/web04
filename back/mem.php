@@ -7,28 +7,27 @@
         <th class="tt">操作</th>
     </tr>
     <?php
-    $rows = $DB->all();
-    foreach ($rows as $row) {
+    foreach ($DB->all() as $row) {
     ?>
-        <tr>
-            <td class="ct pp"><?= $row['name'] ?></td>
-            <td class="ct pp"><?= $row['acc'] ?></td>
-            <td class="ct pp"><?= $row['regdate'] ?></td>
-            <td class="ct pp">
-                <button onclick="location.href='?do=edit_mem&id=<?= $row['id'] ?>'">修改</button><button
-                    onclick="del(this,<?= $row['id'] ?>)">刪除</button>
-            </td>
-        </tr>
+    <tr>
+        <td class="ct pp"><?= $row['name'] ?></td>
+        <td class="ct pp"><?= $row['acc'] ?></td>
+        <td class="ct pp"><?= $row['regdate']?></td>
+        <td class="ct pp">
+            <button onclick="location.href='?do=edit_mem&id=<?= $row['id'] ?>'">修改</button><button
+                onclick="del(<?= $row['id'] ?>)">刪除</button>
+        </td>
+    </tr>
     <?php
     }
     ?>
 </table>
 <script>
-    function del(dom, id) {
-        $.get('./api/del.php?do=mem', {
-            id
-        }, () => {
-            $(dom).parents('tr').remove();
-        })
-    }
+function del(id) {
+    $.post('./api/del_acc.php?do=<?= $table ?>', {
+        id
+    }, () => {
+        location.reload();
+    })
+}
 </script>
