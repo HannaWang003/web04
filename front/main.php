@@ -18,31 +18,32 @@ if (isset($_GET['type'])) {
     <?php
     foreach ($goods as $g) {
     ?>
-        <tr>
-            <th class="pp ct" rowspan="4" width="40%;"><img src="./img/<?= $g['img'] ?>" style="width:80%;"></th>
-            <th class="tt"><?= $g['name'] ?></th>
-        </tr>
-        <tr>
-            <td class="pp">價錢 : <?= $g['price'] ?> <img src="./icon/0402.jpg" onclick="buy(<?= $g['id'] ?>,1)"
-                    style="float:right"></td>
-        </tr>
-        <tr>
-            <td class="pp">規格 : <?= $g['spec'] ?></td>
-        </tr>
-        <tr>
-            <td class="pp">簡介 : <?= $g['intro'] ?></td>
-        </tr>
+    <tr>
+        <th class="pp ct" rowspan="4" width="40%;"><a href="?do=buy&id=<?= $g['id'] ?>"><img
+                    src="./img/<?= $g['img'] ?>" style="width:80%;"></a></th>
+        <th class="tt"><?= $g['name'] ?></th>
+    </tr>
+    <tr>
+        <td class="pp">價錢 : <?= $g['price'] ?> <img src="./icon/0402.jpg" onclick="buy(<?= $g['id'] ?>,1)"
+                style="float:right"></td>
+    </tr>
+    <tr>
+        <td class="pp">規格 : <?= $g['spec'] ?></td>
+    </tr>
+    <tr>
+        <td class="pp">簡介 : <?= $g['intro'] ?></td>
+    </tr>
     <?php
     }
     ?>
 </table>
 <script>
-    function buy(id, qt) {
-        $.post('?do=buycart', {
-            id,
-            qt
-        }, () => {
-            location.href = "?do=buycart";
-        })
-    }
+function buy(id, qt) {
+    $.post('?do=buycart', {
+        id,
+        qt
+    }, () => {
+        location.href = "?do=buycart";
+    })
+}
 </script>
