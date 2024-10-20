@@ -1,2 +1,2 @@
 <h2>購物流程</h2>
-<img src="./icon/0401.jpg">
+<div class="ct"><img src="./icon/0401.jpg" alt=""></div>

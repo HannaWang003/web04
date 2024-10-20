@@ -1,88 +1,82 @@
-<?php
-if (isset($_POST['id'], $_POST['qt'])) {
-    foreach ($_POST['id'] as $idx => $id) {
-        $_SESSION['cart'][$id] = $_POST['qt'][$idx];
-    }
-}
-$row = $Mem->find(['acc' => $_SESSION['mem']]);
-?>
+<h2 class="ct">填寫資料</h2>
 <style>
     #checkout {
         width: 90%;
         margin: auto;
+        box-shadow: 0 0 10px #aaa;
+
+        td,
+        th {
+            padding: 10px;
+        }
     }
 </style>
-<h2 class="ct">填寫資料</h2>
-<form action="./api/checkout.php?do=order" method="post">
-    <table id="checkout">
+<?php
+$mem = $Mem->find(['acc' => $_SESSION['mem']]);
+?>
+<table id="checkout">
+    <tr>
+        <th class="tt">登入帳號</th>
+        <td class="pp" colspan="4"><?= $_SESSION['mem'] ?></td>
+    </tr>
+    <tr>
+        <th class="tt">姓名</th>
+        <td class="pp" colspan="4"><input type="text" name="name" value="<?= $mem['name'] ?>" id="name"></td>
+    </tr>
+    <tr>
+        <th class="tt">電子信箱</th>
+        <td class="pp" colspan="4"><input type="text" name="email" value="<?= $mem['email'] ?>" id="email"></td>
+    </tr>
+    <tr>
+        <th class="tt">聯絡地址</th>
+        <td class="pp" colspan="4"><input type="text" name="addr" value="<?= $mem['addr'] ?>" id="addr"></td>
+    </tr>
+    <tr>
+        <th class="tt">聯絡電話</th>
+        <td class="pp" colspan="4"><input type="text" name="tel" value="<?= $mem['tel'] ?>" id="tel"></td>
+    </tr>
+    <tr>
+        <th class="tt" width="40%">商品名稱</th>
+        <th class="tt" width="20%">編號</th>
+        <th class="tt" width="10%">數量</th>
+        <th class="tt" width="10%">單價</th>
+        <th class="tt" width="20%">小計</th>
+    </tr>
+    <?php
+    $total = 0;
+    foreach ($_SESSION['cart'] as $id => $qt) {
+        $row = $Goods->find($id);
+        $total += $qt * $row['price']
+    ?>
         <tr>
-            <th class="tt" width="30%">登入帳號</th>
-            <td class="pp" colspan="4"><?= $_SESSION['mem'] ?></td>
+            <td class="ct pp"><?= $row['name'] ?></td>
+            <td class="ct pp"><?= $row['no'] ?></td>
+            <td class="ct pp"><?= $qt ?></td>
+            <td class="ct pp"><?= $row['price'] ?></td>
+            <td class="ct pp"><?= $row['price'] * $qt ?></td>
         </tr>
-        <tr>
-            <th class="tt">姓名</th>
-            <td class="pp" colspan="4"><input type="text" name="name" id="name" value="<?= $row['name'] ?>"></td>
-        </tr>
-        <tr>
-            <th class="tt">電子信箱</th>
-            <td class="pp" colspan="4"><input type="text" name="email" id="email" value="<?= $row['email'] ?>"></td>
-        </tr>
-        <tr>
-            <th class="tt">聯絡地址</th>
-            <td class="pp" colspan="4"><input type="text" name="addr" id="addr" value="<?= $row['addr'] ?>"></td>
-        </tr>
-        <tr>
-            <th class="tt">聯絡電話</th>
-            <td class="pp" colspan="4"><input type="text" name="tel" id="tel" value="<?= $row['tel'] ?>"></td>
-        </tr>
-        <tr>
-            <td class="tt ct">商品名稱</td>
-            <td class="tt ct">編號</td>
-            <td class="tt ct">數量</td>
-            <td class="tt ct">單價</td>
-            <td class="tt ct">小計</td>
-        </tr>
-        <?php
-        $sum = 0;
-        foreach ($_SESSION['cart'] as $id => $qt) {
-            $g = $Goods->find($id);
-            $sum += $g['price'] * $qt;
-        ?>
-            <tr>
-                <td class="pp ct"><?= $g['name'] ?></td>
-                <td class="pp ct"><?= $g['no'] ?></td>
-                <td class="pp ct"><?= $qt ?></td>
-                <td class="pp ct"><?= $g['price'] ?></td>
-                <td class="pp ct"><?= $g['price'] * $qt ?></td>
-            </tr>
-        <?php
-        }
-        ?>
-        <tr>
-            <th class="tt" colspan="5">總價 : <?= $sum ?></th>
-        </tr>
-        <tr>
-            <td class="ct" colspan="5"><input type="button" value="確定送出" onclick="checkout()"><input type="button"
-                    value="返回修改訂單" onclick="history.go(-1)"></td>
-        </tr>
-    </table>
-</form>
+    <?php
+    }
+    ?>
+    <tr>
+        <th class="tt" colspan="5">總價 : <?= $total ?></th>
+    </tr>
+</table>
+<div class="ct"><input type="button" value="確定送出" onclick="checkout()"><input type="button" value="返回修改訂單" onclick="history.go(-1)"></div>
 <script>
     function checkout() {
-        let name = $('#name').val();
-        let email = $('#email').val();
-        let addr = $('#addr').val();
-        let tel = $('#tel').val();
-        let total = "<?= $sum ?>"
-        $.post('./api/checkout.php?do=order', {
-            name,
-            email,
-            addr,
-            tel,
-            total
-        }, (res) => {
-            alert("訂購成功\n感謝您的選購");
+        let data = {
+            name: $('#name').val(),
+            email: $('#email').val(),
+            addr: $('#addr').val(),
+            tel: $('#tel').val(),
+            total: <?= $total ?>
+        }
+        $.post('./api/checkout.php?do=order', data, () => {
+            alert("訂購成功\n感謝您的選購")
             location.href = "index.php";
         })
+
+
     }
 </script>

@@ -4,13 +4,13 @@ session_start();
 function to($url)
 {
     header("location:$url");
-}
+};
 function dd($ary)
 {
     echo "<pre>";
     print_r($ary);
     echo "</pre>";
-}
+};
 class DB
 {
     protected $table;
@@ -56,12 +56,24 @@ class DB
         $sql = $this->sql_all($sql, $where, $other);
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
+    function sum($col, $where = "", $other = "")
+    {
+        return $this->math("sum", $col, $where, $other);
+    }
+    function max($col, $where = "", $other = "")
+    {
+        return $this->math("max", $col, $where, $other);
+    }
+    function min($col, $where = "", $other = "")
+    {
+        return $this->math("min", $col, $where, $other);
+    }
     function save($ary)
     {
         if (isset($ary['id'])) {
             $sql = "update `$this->table` set ";
             $sql .= join(",", $this->a2s($ary));
-            $sql .= " where `id`='{$ary['id']}'";
+            $sql .= " where `id`={$ary['id']}";
         } else {
             $sql = "insert into `$this->table` ";
             $col = "(`" . join("`,`", array_keys($ary)) . "`)";
@@ -90,13 +102,31 @@ class DB
         }
         return $this->pdo->exec($sql);
     }
+    function date($ondate)
+    {
+        $todays = strtotime(date("Ymd"));
+        $ondates = strtotime($ondate);
+        $ends = strtotime("+2 days", $ondates);
+        $d['ago'] = date("Y-m-d", strtotime("-2 days"));
+        $d['diff'] = ($ends - $todays) / (60 * 60 * 24);
+        return $d;
+    }
+    function page($div, $now, $where = "", $other = "")
+    {
+        $tot = $this->count($where, $other);
+        $p['pages'] = ceil($tot / $div);
+        $p['start'] = ($now - 1) * $div;
+        $p['prev'] = ($now == 1) ? $now : $now - 1;
+        $p['next'] = ($now == $p['pages']) ? $now : $now + 1;
+        return $p;
+    }
 }
-$Th = new DB('th'); //id,text,big_id;
-$Goods = new DB('goods'); //id,no(6-rand(100000,999999)),big,mid,text,img,price,stock,spec,intro,sh;
-$Order = new DB('orders'); //id,no(14-date("Ymd").rand(100000,999999)),acc,name,email,tel.addr,cart,total,orderdate;
-$Mem = new DB('mem'); //id,acc,pw,total,name,email,tel,addr,regdate;
-$Admin = new DB('admin'); //id,acc,pw,pr;
-$Bottom = new DB('bottom'); //id,bottom;
+$Bottom = new DB('bottom');
+$Admin = new DB('admin');
+$Mem = new DB('mem');
+$Th = new DB('th');
+$Goods = new DB('goods');
+$Order = new DB('orders');
 
 if (isset($_GET['do'], ${ucfirst($_GET['do'])})) {
     $do = $_GET['do'];

@@ -12,23 +12,22 @@ body
 	border:#000 solid 1px;
 	height:768px;
 }
-#top{
-	height:117px;
-}
 #top a
 {
 	color:#CE631C;
 	text-decoration:none;
+	height:113px;
 }
 #left
 {
 	display:inline-block;
 	width:20%;
 	padding:2%;
-	height:540px;
+	height:530px;
 	vertical-align:top;
 	border:#000 1px solid;
-	overflow-x:auto;
+	overflow:auto;
+	scrollbar-width:none;
 }
 #left a
 {
@@ -48,7 +47,7 @@ body
 	display:inline-block;
 	width:71%;
 	padding:2%;
-	height:540px;
+	height:530px;
 	border:#000 1px solid;
 	overflow:auto;
 }
@@ -100,7 +99,7 @@ input[type=text],input[type=password],input[type=submit],button,.button,input[ty
 }
 input[type=text],input[type=password]
 {
-	width:170px;
+	min-width:40px;
 }
 .s
 {

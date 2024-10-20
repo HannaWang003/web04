@@ -1,14 +1,8 @@
 <h2 class="ct">新增商品</h2>
-<style>
-    #goods {
-        width: 80%;
-        margin: auto;
-    }
-</style>
 <form action="./api/edit_goods.php?do=goods" method="post" enctype="multipart/form-data">
-    <table id="goods">
+    <table class="all" style="margin:auto;">
         <tr>
-            <th class="tt" width="40%;">所屬大分類</th>
+            <th class="tt" width="40%">所屬大分類</th>
             <td class="pp">
                 <select name="big" id="big">
                     <?php
@@ -55,27 +49,25 @@
         </tr>
         <tr>
             <th class="tt">商品介紹</th>
-            <td class="pp" class="padding:5px;">
-                <textarea name="intro" id="intro" style="width:90%;height:150px;"></textarea>
+            <td class="pp">
+                <textarea name="intro" id="intro" style="width:95%;height:150px;"></textarea>
             </td>
         </tr>
     </table>
-    <div class="ct"><input type="submit" value="新增"><input type="reset" value="重置"><input type="button" value="返回"
-            onclick="history.go(-1)"></div>
+    <div class="ct"><input type="submit" value="新增"> | <input type="reset" value="重置"> | <input type="button" value="返回" onclick="history.go(-1)"></div>
 </form>
 <script>
-    getMid($('#big').val(), 0);
-    $('#big').on('change', function() {
-        let big_id = $(this).val();
-        getMid(big_id, 0);
-    })
+    getMid($('#big').val());
 
-    function getMid(big_id, mid) {
+    function getMid(big_id) {
         $.post('./api/get_mid.php?do=th', {
-            big_id,
-            mid
+            big_id
         }, (res) => {
-            $('#mid').html(res);
+            $('#mid').html(res)
         })
     }
+    $('#big').on('change', function() {
+        let big_id = $(this).val();
+        getMid(big_id);
+    })
 </script>

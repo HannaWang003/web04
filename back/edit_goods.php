@@ -2,25 +2,17 @@
 $row = $Goods->find($_GET['id']);
 ?>
 <h2 class="ct">修改商品</h2>
-<style>
-    #goods {
-        width: 80%;
-        margin: auto;
-    }
-</style>
 <form action="./api/edit_goods.php?do=goods" method="post" enctype="multipart/form-data">
-    <table id="goods">
+    <table class="all" style="margin:auto;">
         <tr>
-            <th class="tt" width="40%;">所屬大分類</th>
+            <th class="tt" width="40%">所屬大分類</th>
             <td class="pp">
                 <select name="big" id="big">
                     <?php
                     $bigs = $Th->all(['big_id' => 0]);
                     foreach ($bigs as $big) {
                     ?>
-                        <option value="<?= $big['id'] ?>" <?= ($big['id'] == $row['big']) ? "selected" : "" ?>>
-                            <?= $big['name'] ?>
-                        </option>
+                        <option value="<?= $big['id'] ?>" class='big' <?= ($big['id'] == $row['big']) ? "selected" : "" ?>><?= $big['name'] ?></option>
                     <?php
                     }
                     ?>
@@ -40,19 +32,19 @@ $row = $Goods->find($_GET['id']);
         </tr>
         <tr>
             <th class="tt">商品名稱</th>
-            <td class="pp"><input type="text" name="name" value="<?= $row['name'] ?>"></td>
+            <td class="pp"><input type="text" name="name" id="name" value="<?= $row['name'] ?>"></td>
         </tr>
         <tr>
             <th class="tt">商品價格</th>
-            <td class="pp"><input type="text" name="price" value="<?= $row['price'] ?>"></td>
+            <td class="pp"><input type="text" name="price" id="price" value="<?= $row['price'] ?>"></td>
         </tr>
         <tr>
             <th class="tt">規格</th>
-            <td class="pp"><input type="text" name="spec" value="<?= $row['spec'] ?>"></td>
+            <td class="pp"><input type="text" name="spec" id="spec" value="<?= $row['spec'] ?>"></td>
         </tr>
         <tr>
             <th class="tt">庫存量</th>
-            <td class="pp"><input type="text" name="stock" value="<?= $row['stock'] ?>"></td>
+            <td class="pp"><input type="text" name="stock" id="stock" value="<?= $row['stock'] ?>"></td>
         </tr>
         <tr>
             <th class="tt">商品圖片</th>
@@ -60,29 +52,27 @@ $row = $Goods->find($_GET['id']);
         </tr>
         <tr>
             <th class="tt">商品介紹</th>
-            <td class="pp" class="padding:5px;">
-                <textarea name="intro" id="intro" style="width:90%;height:150px;"><?= $row['intro'] ?></textarea>
+            <td class="pp">
+                <textarea name="intro" id="intro" style="width:95%;height:150px;"><?= $row['intro'] ?></textarea>
             </td>
         </tr>
     </table>
     <input type="hidden" name="id" value="<?= $row['id'] ?>">
-    <div class="ct"><input type="submit" value="修改"><input type="reset" value="重置"><input type="button" value="返回"
-            onclick="history.go(-1)"></div>
+    <div class="ct"><input type="submit" value="修改"> | <input type="reset" value="重置"> | <input type="button" value="返回" onclick="history.go(-1)"></div>
 </form>
 <script>
     getMid($('#big').val(), <?= $row['mid'] ?>);
-    $('#big').on('change', function() {
-        let big_id = $(this).val();
-        getMid(big_id, 0);
-    })
 
-    function getMid(big_id) {
-        let mid = "<?= $row['mid'] ?>";
+    function getMid(big_id, mid) {
         $.post('./api/get_mid.php?do=th', {
             big_id,
             mid
         }, (res) => {
-            $('#mid').html(res);
+            $('#mid').html(res)
         })
     }
+    $('#big').on('change', function() {
+        let big_id = $(this).val();
+        getMid(big_id, 0);
+    })
 </script>

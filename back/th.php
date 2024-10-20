@@ -1,7 +1,7 @@
 <h2 class="ct">商品分類</h2>
-<div class="ct"><span>新增大分類</span><input type="text" name="big" id="big"><input type="button" value="新增"
-        onclick="add('big')"></div>
-<div class="ct"><span>新增中分類</span><select name="big_id" id="big_id">
+<div class="ct">新增大分類<input type="text" name="big" id="big"><input type="button" value="新增" onclick="add('big')"></div>
+<div class="ct">新增中分類
+    <select name="big_id" id="big_id">
         <?php
         $bigs = $Th->all(['big_id' => 0]);
         foreach ($bigs as $big) {
@@ -10,11 +10,18 @@
         <?php
         }
         ?>
-    </select><input type="text" name="mid" id="mid"><input type="button" value="新增" onclick="add('mid')"></div>
+    </select>
+    <input type="text" name="mid" id="mid">
+    <input type="button" value="新增" onclick="add('mid')">
+</div>
 <style>
     #th {
-        width: 90%;
-        margin: auto;
+        width: 100%;
+
+        td,
+        th {
+            padding: 5px;
+        }
     }
 </style>
 <table id="th">
@@ -22,30 +29,64 @@
     foreach ($bigs as $big) {
     ?>
         <tr>
-            <td class="tt"><b class="name"><?= $big['name'] ?></b></td>
-            <td class="tt ct"><input type="button" value="修改" onclick="edit(this,<?= $big['id'] ?>)"><input type="button"
-                    value="刪除" onclick="del(<?= $big['id'] ?>,'big')"></td>
+            <td class="tt"><b><?= $big['name'] ?></b></td>
+            <td class="ct tt"><input type="button" value="修改" onclick="edit(this,<?= $big['id'] ?>)"><input type="button" value="刪除" onclick="del(<?= $big['id'] ?>,'th')"></td>
         </tr>
         <?php
         $mids = $Th->all(['big_id' => $big['id']]);
         foreach ($mids as $mid) {
         ?>
             <tr>
-                <td class="pp ct name"><?= $mid['name'] ?></td>
-                <td class="pp ct"><input type="button" value="修改" onclick="edit(this,<?= $mid['id'] ?>)"><input type="button"
-                        value="刪除" onclick="del(<?= $mid['id'] ?>,'mid')"></td>
+                <td class="ct pp"><?= $mid['name'] ?></td>
+                <td class="ct pp"><input type="button" value="修改" onclick="edit(this,<?= $mid['id'] ?>)"><input type="button" value="刪除" onclick="del(<?= $mid['id'] ?>)"></td>
             </tr>
-    <?php
+        <?php
         }
+        ?>
+    <?php
     }
     ?>
 </table>
+<script>
+    function edit(dom, id) {
+        let name = prompt("請輸入欲修改的內容 : ", $(dom).parent('td').siblings('td').text())
+        if (name.trim() != "") {
+            $.post('./api/add_th.php?do=th', {
+                id,
+                name
+            }, () => {
+                location.reload();
+            })
+        }
+    }
+
+    function add(type) {
+        let name = "";
+        let big_id = 0;
+        switch (type) {
+            case "big":
+                name = $('#big').val();
+                big_id = 0;
+                break;
+            case "mid":
+                name = $('#mid').val();
+                big_id = $('#big_id').val();
+                break;
+        }
+        $.post('./api/add_th.php?do=th', {
+            name,
+            big_id
+        }, () => {
+            location.reload();
+        })
+    }
+</script>
 <h2 class="ct">商品管理</h2>
-<div class="ct"><input type="button" value="新增商品" onclick="location.href='?do=add_goods'"></div>
+<div class="ct"><button onclick="location.href='?do=add_goods'">新增商品</button></div>
+
 <style>
     #goods {
-        width: 90%;
-        margin: auto;
+        width: 100%;
     }
 </style>
 <table id="goods">
@@ -57,67 +98,35 @@
         <th class="tt">操作</th>
     </tr>
     <?php
-    $rows = $Goods->all();
-    foreach ($rows as $row) {
+    $goods = $Goods->all();
+    foreach ($goods as $g) {
     ?>
         <tr>
-            <td class="ct pp"><?= $row['no'] ?></td>
-            <td class="ct pp"><?= $row['name'] ?></td>
-            <td class="ct pp"><?= $row['stock'] ?></td>
-            <td class="ct pp"><?= ($row['sh'] == 1) ? "販售中" : "已下架" ?></td>
-            <td class="ct pp">
-                <button onclick="location.href='?do=edit_goods&id=<?= $row['id'] ?>'">修改</button>
-                <button onclick="del(<?= $row['id'] ?>,'g')">刪除</button>
-            </td>
+            <td class="ct pp"><?= $g['no'] ?></td>
+            <td class="pp"><?= $g['name'] ?></td>
+            <td class="ct pp"><?= $g['stock'] ?></td>
+            <td class="ct pp"><?= ($g['sh'] == 1) ? "販售中" : "已下架" ?></td>
+            <td class="pp"><button onclick="location.href='?do=edit_goods&id=<?= $g['id'] ?>'">修改</button><button onclick="del(<?= $g['id'] ?>,'goods')">刪除</button><br><button onclick="sh(<?= $g['id'] ?>,1)">上架</button><button onclick="sh(<?= $g['id'] ?>,0)">下架</button></td>
         </tr>
     <?php
     }
     ?>
 </table>
-<div class="ct"><input type="button" value="返回" onclick="location.href='index.php'"></div>
 <script>
-    function add(th) {
-        let name = "";
-        let big_id = 0;
-        switch (th) {
-            case "big":
-                name = $("#" + th).val();
-                break;
-            case "mid":
-                name = $('#' + th).val();
-                big_id = $('#big_id').val();
-                break;
-        }
-        console.log(name);
-        $.post('./api/edit.php?do=th', {
-            name,
-            big_id
+    function del(id, table) {
+        $.post('./api/del.php?do=' + table, {
+            id
         }, () => {
             location.reload();
         })
     }
 
-    function del(id, type) {
-        $.post('./api/del_goods.php', {
+    function sh(id, sh) {
+        $.post('./api/sh.php?do=goods', {
             id,
-            type
+            sh
         }, () => {
             location.reload();
         })
-    }
-
-    function edit(dom, id) {
-        let old = $(dom).parents('tr').find('.name').text();
-        let name = prompt("請輸入欲修改的內容:", old);
-        if (name != null && name != old && name != "") {
-            $.post('./api/edit.php?do=th', {
-                id,
-                name
-            }, () => {
-                location.reload();
-            })
-        } else {
-            alert("未修改任何內容");
-        }
     }
 </script>

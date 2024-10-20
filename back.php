@@ -1,14 +1,10 @@
 <?php
 include_once "./api/db.php";
-if (!isset($_SESSION['admin'])) {
-	to("index.php?do=admin");
-}
 if (isset($_POST['bottom'])) {
-	$Bottom->save($_POST);
+	$DB->save($_POST);
 }
 ?>
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0057)?do=admin -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -30,21 +26,18 @@ if (isset($_POST['bottom'])) {
 			<img src="./icon/0417.jpg">
 		</div>
 		<div id="left" class="ct">
-			<div style="min-height:400px;">
-				<?php
-				$admin = $Admin->find(['acc' => $_SESSION['admin']]);
-				$pr = unserialize($admin['pr']);
-				?>
+			<div style="height:500px;overflow:auto;scrollbar-width:none;">
+				<?php $pr = unserialize($Admin->find(['acc' => $_SESSION['admin']])['pr']) ?>
 				<?= ($_SESSION['admin'] == "admin") ? "<a href='?do=admin'>管理權限設置</a>" : "" ?>
 				<?= ($_SESSION['admin'] == "admin" || in_array(1, $pr)) ? "<a href='?do=th'>商品分類與管理</a>" : "" ?>
 				<?= ($_SESSION['admin'] == "admin" || in_array(2, $pr)) ? "<a href='?do=order'>訂單管理</a>" : "" ?>
 				<?= ($_SESSION['admin'] == "admin" || in_array(3, $pr)) ? "<a href='?do=mem'>會員管理</a>" : "" ?>
 				<?= ($_SESSION['admin'] == "admin" || in_array(4, $pr)) ? "<a href='?do=bottom'>頁尾版權管理</a>" : "" ?>
 				<?= ($_SESSION['admin'] == "admin" || in_array(5, $pr)) ? "<a href='?do=news'>最新消息管理</a>" : "" ?>
-				<a href="./api/logout.php?do=admin" style="color:#f00;">登出</a>
+				<a href='./api/logout.php?do=admin' style='color:#f00;'>登出</a>
 			</div>
 		</div>
-		<div id="right" style="display:none">
+		<div id="right">
 			<?php
 			$do = ($_GET['do']) ?? "admin";
 			$file = "./back/$do.php";
@@ -60,11 +53,7 @@ if (isset($_POST['bottom'])) {
 		<div id="bottom" style="line-height:70px; color:#FFF; background:url(icon/bot.png);" class="ct">
 			<?= $Bottom->find(1)['bottom'] ?></div>
 	</div>
-	<script>
-		$(document).ready(() => {
-			$('#right').show(500);
-		})
-	</script>
+
 </body>
 
 </html>
